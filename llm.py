@@ -37,38 +37,39 @@ class CreateEventParameters(BaseModel):
     description: Optional[str] = Field(None, description="description or details of the event (optional)")
     location: Optional[str] = Field(None, description="location of the event (optional)")
 
-query = input("Enter details: ")
+# query = input("Enter details: ")
 
-# Check if the chain was able to extract the parameters successfully
-if query and len(query) > 0:
-    
+def final_run(query):
+    # Check if the chain was able to extract the parameters successfully
+    if query and len(query) > 0:
+        
 
-    # Create a list of tools for the agent
-    llm = OpenAI(temperature=0)
-    tools = [
-        StructuredTool.from_function(
-            name="Create Event",
-            func=create_event,
-            description="Create an event in the Google calendar with the details provided",
-            args_schema=CreateEventParameters
-        ),
-        StructuredTool.from_function(
-            name="Update Event",
-            func=update_event,
-            description="Update an existing event in the Google calendar",
-            args_schema=UpdateEventParameters
-        ),
-        StructuredTool.from_function(
-            name="Delete Event",
-            func=delete_event,
-            description="Delete an event from the Google calendar",
-            args_schema=DeleteEventParameters
-        ),
-    ]
+        # Create a list of tools for the agent
+        llm = OpenAI(temperature=0)
+        tools = [
+            StructuredTool.from_function(
+                name="Create Event",
+                func=create_event,
+                description="Create an event in the Google calendar with the details provided",
+                args_schema=CreateEventParameters
+            ),
+            StructuredTool.from_function(
+                name="Update Event",
+                func=update_event,
+                description="Update an existing event in the Google calendar",
+                args_schema=UpdateEventParameters
+            ),
+            StructuredTool.from_function(
+                name="Delete Event",
+                func=delete_event,
+                description="Delete an event from the Google calendar",
+                args_schema=DeleteEventParameters
+            ),
+        ]
 
-    # Initialize the agent chain
-    agent_chain = initialize_agent(tools, llm, agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION, verbose=True)
-    response = agent_chain.run(input=query)
-    print(response)
-else:
-    print("Error: Unable to extract parameters from the user input.")
+        # Initialize the agent chain
+        agent_chain = initialize_agent(tools, llm, agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION, verbose=True)
+        response = agent_chain.run(input=query)
+        print(response)
+    else:
+        print("Error: Unable to extract parameters from the user input.")
