@@ -161,7 +161,7 @@ def update_event(event_name, **kwargs):
                                     end_time = start_time +time_difference
                                     updated_event['start']['dateTime'] = start_time.strftime("%Y-%m-%dT%H:%M:%S")
                                     updated_event['end']['dateTime'] = end_time.strftime("%Y-%m-%dT%H:%M:%S")
-                        print("Start time : " + start_time_str)
+                        # print("Start time : " + start_time_str)
                         
                         name = kwargs.get("name")
                         if name:
@@ -186,3 +186,4 @@ def update_event(event_name, **kwargs):
             print("No matching events found.")
     else:
         print("No upcoming events found.")
+        
