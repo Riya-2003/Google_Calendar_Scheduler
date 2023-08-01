@@ -1,0 +1,3 @@
+# Google Calendar Scheduler
+
+Introducing Langchain's Google Calendar Scheduler with WhatsApp integration! Seamlessly schedule events and appointments from your WhatsApp chat by simply sending commands. Access the power of Google Calendar API through our user-friendly bot, allowing you to create, manage, and organize events effortlessly. Streamline your scheduling process and stay on top of your calendar, all from your favorite messaging app.
