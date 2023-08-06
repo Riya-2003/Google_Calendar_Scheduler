@@ -5,6 +5,10 @@ from googleapiclient.errors import HttpError
 from api_call import service
 import datefinder
 import pytz
+from dotenv import load_dotenv
+import calendar
+
+load_dotenv()
 
 # Function to get upcoming events with their IDs
 def get_upcoming_events(service):
@@ -186,4 +190,43 @@ def update_event(event_name, **kwargs):
             print("No matching events found.")
     else:
         print("No upcoming events found.")
+
+# to send message to WhatsApp
+from twilio.rest import Client
+import os
+
+account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+auth_token = os.getenv('TWILIO_AUTH_TOKEN')
+client = Client(account_sid, auth_token)
+
+def send_message(to: str, message: str) -> None:
+    '''
+    Send message to a Telegram user.
+
+    Parameters:
+        - to(str): sender whatsapp number in this whatsapp:+919558515995 form
+        - message(str): text message to send
+
+    Returns:
+        - None
+    '''
+
+    _ = client.messages.create(
+        from_=os.getenv('FROM'),
+        body=message,
+        to=to
+    )
+
+# function for prefix
+def prefix(current_time):
+        timezone = pytz.timezone("UTC")
+        tomorrow_date = current_time + timedelta(days=1)
         
+        return f"""
+        Also consider the following information:
+        timezone : {current_time}
+        Today's date-time in iso format: {current_time.astimezone(timezone).isoformat()}
+        Tomorrow's date-time in ISO format: {tomorrow_date.isoformat()}
+        Today's day of the week : {calendar.day_name[current_time.astimezone(timezone).weekday()]}
+        You can use this information to parse the user's input when sending it to the tools. Also you can use today's day and date to calculate the dates on upcoming days.
+    """

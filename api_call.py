@@ -17,7 +17,7 @@ if not creds or not creds.valid:
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'Google_Calendar_Scheduler/client_secret.json', scopes)
+                'credentials.json', scopes)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.json', 'w') as token:
