@@ -96,14 +96,16 @@ if query and len(query) > 0:
     def prefix(current_time):
         timezone = pytz.timezone("UTC")
         tomorrow_date = current_time + timedelta(days=1)
+        current_year = current_time.year
         
         return f"""
-        Also consider the following information:
         timezone : {current_time}
         Today's date-time in iso format: {current_time.astimezone(timezone).isoformat()}
         Tomorrow's date-time in ISO format: {tomorrow_date.isoformat()}
         Today's day of the week : {calendar.day_name[current_time.astimezone(timezone).weekday()]}
-        You can use this information to parse the user's input when sending it to the tools. Also you can use today's day and date to calculate the dates on upcoming days.
+        Current year: {current_year}
+        Note: Just perform one event at a time. If we schedule an event do not update or delete event. Also don't take description and location on your own if not given.
+        
     """
         # Get the current time in UTC
 
@@ -126,5 +128,6 @@ if query and len(query) > 0:
     )
     response = agent_chain.run(input=query)
     print(response)
+    # print(current_time)
 else:
     print("Error: Unable to extract parameters from the user input.")
